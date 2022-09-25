@@ -43,9 +43,20 @@ class LivroController{
             })
 
         }
+
+        static excluirLivro = (req, res) => {
+            const id = req.params.id
+
+        livros.findOneAndDelete(id, (err)=> {
+             if(!err){
+                    res.status(200).send({message: 'Livro Excluido com sucesso'})
+            }else{
+
+                    res.status(500).send({message: err.message})
+                }
+            })
+        }
 }
 
- function buscaLivro(id){
-            return livros.findIndex(livro => livro.id == id)
-        }
+ 
  export default LivroController
