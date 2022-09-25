@@ -10,8 +10,15 @@ class LivroController{
         }
 
         static listarLivrosId = (req, res) => {
-            let index = buscaLivro(req.params.id);
-            res.json(livros[index]);
+
+           const id = req.params.id;
+            livros.findById(id, (err, livros) => {
+                if(err) {
+                    res.status(400).send({message: `${err.message} - id do livro não localizado`})
+                }else{
+                    res.status(200).send(livros);
+                }
+            })
         }
 
         static cadastrarLivro = (req, res) => {
@@ -24,6 +31,17 @@ class LivroController{
                     res.status(200).send(livro.toJSON())
                 }
             })
+        }
+        static atualizarLivro = (req, res) => {
+            const id = req.params.id;
+            livros.findByIdAndUpdate(id, {$set: req.body}, (err) => {
+                if(!err){
+                    res.status(200).send({message: 'livro atualziado com sucesso'})
+                } else{
+                    res.status(500).send({message: err.message})
+                }
+            })
+
         }
 }
 
